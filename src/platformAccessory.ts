@@ -28,7 +28,7 @@ export class ServoStatelessProgrammableSwitchAccessory {
 	  this.accessory.getService(this.platform.Service.AccessoryInformation)!
       .setCharacteristic(this.platform.Characteristic.Manufacturer, 'YanShon')
       .setCharacteristic(this.platform.Characteristic.Model, 'Servo')
-      .setCharacteristic(this.platform.Characteristic.SerialNumber, '1');
+      .setCharacteristic(this.platform.Characteristic.SerialNumber, 'Default-SerialNumber');
 
 	  // you can create multiple services for each accessory
 	  this.service = this.accessory.getService(this.platform.Service.Switch) || this.accessory.addService(this.platform.Service.Switch);
