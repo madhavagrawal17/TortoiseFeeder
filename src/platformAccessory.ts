@@ -66,41 +66,44 @@ export class ServoStatelessProgrammableSwitchAccessory {
    */
   handleProgrammableSwitchOutputStateSet(value, callback) {
     this.log.debug('Triggered SET ProgrammableSwitchOutputState:', value);
-    this.outputState = value;
-	// var options = {};
-	// options.scriptPath = this.pythonScriptPath;
-			
-	// PythonShell.run(this.pythonScriptName, options, function (err, results) {
-	// 	if (err) {
-	// 		this.log.debug("Script Error", options.scriptPath, options.args, err);
-	// 		callback(err);
-	// 	} else {
-	// 		// results is an array consisting of messages collected during execution
-	// 		this.log.debug('%j', results);
-	// 	}
-	// }.bind(this));
-
-	// Execute command to detect state
-	this.log.debug('Set State Value:', value);
-	var success = false;
-	var scriptError = null;
-	var logger = this.log;
-	executePython(this.pythonScriptCmd, function (error, stdout, stderr) {
-		// Error detection
-		if (error && stderr) {
-			success = false;
-			logger.debug('Error in running python script:', stderr);
-			scriptError = stderr;
-		}
-
-		success = true;
-	});
-
-  var localService = this.service;
-  var characteristic = this.platform.Characteristic;
-  setTimeout(function () {
-    localService.setCharacteristic(characteristic.On, false);
-  }.bind(this), 1000);
+    var success = false;
+    var scriptError = null;
+    var logger = this.log;
+    if(value)
+    {
+      this.outputState = value;
+      // var options = {};
+      // options.scriptPath = this.pythonScriptPath;
+          
+      // PythonShell.run(this.pythonScriptName, options, function (err, results) {
+      // 	if (err) {
+      // 		this.log.debug("Script Error", options.scriptPath, options.args, err);
+      // 		callback(err);
+      // 	} else {
+      // 		// results is an array consisting of messages collected during execution
+      // 		this.log.debug('%j', results);
+      // 	}
+      // }.bind(this));
+    
+      // Execute command to detect state
+      
+      executePython(this.pythonScriptCmd, function (error, stdout, stderr) {
+        // Error detection
+        if (error && stderr) {
+          success = false;
+          logger.debug('Error in running python script:', stderr);
+          scriptError = stderr;
+        }
+    
+        success = true;
+      });
+    
+      var localService = this.service;
+      var characteristic = this.platform.Characteristic;
+      setTimeout(function () {
+        localService.setCharacteristic(characteristic.On, false);
+      }.bind(this), 1000);
+    }
 
 	if (success) {
 		callback(null);
