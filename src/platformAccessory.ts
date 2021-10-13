@@ -108,6 +108,12 @@ export class ServoStatelessProgrammableSwitchAccessory {
 		success = true;
 	});
 
+  var localService = this.service;
+  var characteristic = this.platform.Characteristic;
+  setTimeout(function () {
+    localService.setCharacteristic(characteristic.On, false);
+  }.bind(this), 1000);
+
 	if (success) {
 		callback(null);
 	}
