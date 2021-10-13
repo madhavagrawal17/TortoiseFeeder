@@ -21,6 +21,8 @@ export class RaspberryPiHomebridgePlatform implements DynamicPlatformPlugin {
     public readonly api: API,
     private readonly accessory: PlatformAccessory
   ) {
+
+    this.config = config;
     this.log.debug('Finished initializing platform:', this.config.name);
 
     // When this event is fired it means Homebridge has restored all cached accessories from disk.
@@ -28,9 +30,18 @@ export class RaspberryPiHomebridgePlatform implements DynamicPlatformPlugin {
     // in order to ensure they weren't added to homebridge already. This event can also be used
     // to start discovery of new accessories.
     this.api.on('didFinishLaunching', () => {
-      log.debug('Executed didFinishLaunching callback');
-      // run the method to discover / register your devices as accessories
-      this.discoverDevices();
+      // log.debug('Executed didFinishLaunching callback');
+      // // run the method to discover / register your devices as accessories
+      // this.discoverDevices();
+
+       // Add or update accessories defined in config.json
+      this.addAccessory();
+
+      // Remove extra accessories in cache
+      for (var name in this.accessories) {
+        var accessory = this.accessories[name];
+        if (!accessory.reachable) this.removeAccessory(accessory);
+      }
     });
   }
 
@@ -45,12 +56,21 @@ export class RaspberryPiHomebridgePlatform implements DynamicPlatformPlugin {
     this.accessories.push(accessory);
   }
 
+  removeAccessory(accessory: PlatformAccessory) {
+    if (accessory) {
+      var name = accessory.context.name;
+      this.log.info(name + " is removed from HomeBridge.");
+      this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
+      delete this.accessories[name];
+    }
+  }
+
   /**
    * This is an example method showing how to register discovered accessories.
    * Accessories must only be registered once, previously created accessories
    * must not be registered again to prevent "duplicate UUID" errors.
    */
-  discoverDevices() {
+  addAccessory() {
 
     // EXAMPLE ONLY
     // A real plugin you would discover accessories from the local network, cloud services
