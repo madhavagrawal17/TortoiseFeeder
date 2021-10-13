@@ -8,7 +8,7 @@ export class ServoStatelessProgrammableSwitchAccessory {
  // public readonly Service: typeof Service = this.api.hap.Service;
   //public readonly Characteristic: typeof Characteristic = this.api.hap.Characteristic;
   private service: Service;
-  private outputState;
+  private outputState = false;
   private pythonScriptCmd;
   private log;
   private config;
@@ -26,9 +26,9 @@ export class ServoStatelessProgrammableSwitchAccessory {
 
 	  // set accessory information
 	  this.accessory.getService(this.platform.Service.AccessoryInformation)!
-      .setCharacteristic(this.platform.Characteristic.Manufacturer, 'YanShon')
-      .setCharacteristic(this.platform.Characteristic.Model, 'Servo')
-      .setCharacteristic(this.platform.Characteristic.SerialNumber, 'Default-SerialNumber');
+      .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Default-Manufacturer')
+      .setCharacteristic(this.platform.Characteristic.Model, 'Default-Model')
+      .setCharacteristic(this.platform.Characteristic.SerialNumber, 'Default-Serial');
 
 	  // you can create multiple services for each accessory
 	  this.service = this.accessory.getService(this.platform.Service.Switch) || this.accessory.addService(this.platform.Service.Switch);
@@ -41,25 +41,13 @@ export class ServoStatelessProgrammableSwitchAccessory {
       // this.service = new this.Service.StatefulProgrammableSwitch(this.name);
 
       // create handlers for required characteristics
-      this.service.getCharacteristic(this.platform.Characteristic.ProgrammableSwitchEvent)
-        .onGet(this.handleProgrammableSwitchEventGet.bind(this));
+      // this.service.getCharacteristic(this.platform.Characteristic.)
+      //   .onGet(this.handleProgrammableSwitchEventGet.bind(this));
 
-      this.service.getCharacteristic(this.platform.Characteristic.ProgrammableSwitchOutputState)
+        this.service.getCharacteristic(this.platform.Characteristic.On)
         .on('get', this.handleProgrammableSwitchOutputStateGet.bind(this))
         .on('set', this.handleProgrammableSwitchOutputStateSet.bind(this));
 
-  }
-
-  /**
-   * Handle requests to get the current value of the "Programmable Switch Event" characteristic
-   */
-  handleProgrammableSwitchEventGet() {
-    this.log.debug('Triggered GET ProgrammableSwitchEvent');
-
-    // set this to a valid value for ProgrammableSwitchEvent
-	this.outputState = this.platform.Characteristic.ProgrammableSwitchEvent.SINGLE_PRESS;
-
-    return this.outputState;
   }
 
   /**
@@ -69,7 +57,6 @@ export class ServoStatelessProgrammableSwitchAccessory {
     this.log.debug('Triggered GET ProgrammableSwitchOutputState');
 
     // set this to a valid value for ProgrammableSwitchOutputState
-	this.outputState = this.platform.Characteristic.ProgrammableSwitchEvent.SINGLE_PRESS;
 	var error = null;
 	callback(error, this.outputState);
   }
@@ -79,6 +66,7 @@ export class ServoStatelessProgrammableSwitchAccessory {
    */
   handleProgrammableSwitchOutputStateSet(value, callback) {
     this.log.debug('Triggered SET ProgrammableSwitchOutputState:', value);
+    this.outputState = value;
 	// var options = {};
 	// options.scriptPath = this.pythonScriptPath;
 			
