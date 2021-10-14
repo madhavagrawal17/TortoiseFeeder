@@ -80,8 +80,10 @@ export class ServoStatelessProgrammableSwitchAccessory {
     
       var localService = this.service;
       var characteristic = this.platform.Characteristic;
+      var control = this;
       setTimeout(function () {
         localService.updateCharacteristic(characteristic.On, false);
+        control.setState(false);
       }.bind(this), 1000);
     }
 
@@ -91,6 +93,10 @@ export class ServoStatelessProgrammableSwitchAccessory {
     else {
       callback(scriptError, this.outputState);
     }
+  }
+
+  setState (value: boolean){
+    this.outputState = value;
   }
 
 }
