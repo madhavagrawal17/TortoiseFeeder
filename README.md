@@ -8,7 +8,7 @@
 
 # Homebridge RaspberryPi PetFeeder
 
-This Plugin will help to add a servo motor to raspberry PI to use as a pet feeder. This has a single switch which need the script python command. This switch will automatically turned off after 2 seconds.
+This Plugin will help to add a servo motor to raspberry PI to use as a pet feeder. This has a single switch which need the script python command. This switch will automatically turned off after 1 second.
 
 
 <span align="center">
