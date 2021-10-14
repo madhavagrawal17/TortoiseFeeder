@@ -57,8 +57,8 @@ export class ServoStatelessProgrammableSwitchAccessory {
     this.log.debug('Triggered GET ProgrammableSwitchOutputState');
 
     // set this to a valid value for ProgrammableSwitchOutputState
-	var error = null;
-	callback(error, this.outputState);
+    var error = null;
+    callback(error, this.outputState);
   }
 
   /**
@@ -69,9 +69,10 @@ export class ServoStatelessProgrammableSwitchAccessory {
     var success = false;
     var scriptError = null;
     var logger = this.log;
-    if(value)
+    if(value == true)
     {
       this.outputState = value;
+      this.log.debug('Value :', value);
       // var options = {};
       // options.scriptPath = this.pythonScriptPath;
           
@@ -101,16 +102,16 @@ export class ServoStatelessProgrammableSwitchAccessory {
       var localService = this.service;
       var characteristic = this.platform.Characteristic;
       setTimeout(function () {
-        localService.setCharacteristic(characteristic.On, false);
+        localService.updateCharacteristic(characteristic.On, false);
       }.bind(this), 1000);
     }
 
-	if (success) {
-		callback(null);
-	}
-	else {
-		callback(scriptError);
-	}
+    if (success) {
+      callback(null);
+    }
+    else {
+      callback(scriptError);
+    }
   }
 
 }
