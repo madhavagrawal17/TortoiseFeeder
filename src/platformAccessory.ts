@@ -37,13 +37,6 @@ export class ServoStatelessProgrammableSwitchAccessory {
 	  // in this example we are using the name we stored in the `accessory.context` in the `discoverDevices` method.
 	  this.service.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device.DisplayName);
 
-      // create a new Stateless Programmable Switch service
-      // this.service = new this.Service.StatefulProgrammableSwitch(this.name);
-
-      // create handlers for required characteristics
-      // this.service.getCharacteristic(this.platform.Characteristic.)
-      //   .onGet(this.handleProgrammableSwitchEventGet.bind(this));
-
         this.service.getCharacteristic(this.platform.Characteristic.On)
         .on('get', this.handleProgrammableSwitchOutputStateGet.bind(this))
         .on('set', this.handleProgrammableSwitchOutputStateSet.bind(this));
@@ -73,20 +66,6 @@ export class ServoStatelessProgrammableSwitchAccessory {
     {
       this.outputState = value;
       this.log.debug('Value :', value);
-      // var options = {};
-      // options.scriptPath = this.pythonScriptPath;
-          
-      // PythonShell.run(this.pythonScriptName, options, function (err, results) {
-      // 	if (err) {
-      // 		this.log.debug("Script Error", options.scriptPath, options.args, err);
-      // 		callback(err);
-      // 	} else {
-      // 		// results is an array consisting of messages collected during execution
-      // 		this.log.debug('%j', results);
-      // 	}
-      // }.bind(this));
-    
-      // Execute command to detect state
       
       executePython(this.pythonScriptCmd, function (error, stdout, stderr) {
         // Error detection

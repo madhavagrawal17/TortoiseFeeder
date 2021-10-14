@@ -38,10 +38,10 @@ export class RaspberryPiHomebridgePlatform implements DynamicPlatformPlugin {
       this.addAccessory();
 
       // Remove extra accessories in cache
-      for (var name in this.accessories) {
-        var accessory = this.accessories[name];
-        if (!accessory.reachable) this.removeAccessory(accessory);
-      }
+      // for (var name in this.accessories) {
+      //   var accessory = this.accessories[name];
+      //   if (!accessory.reachable) this.removeAccessory(accessory);
+      // }
     });
   }
 
@@ -56,14 +56,13 @@ export class RaspberryPiHomebridgePlatform implements DynamicPlatformPlugin {
     this.accessories.push(accessory);
   }
 
-  removeAccessory(accessory: PlatformAccessory) {
-    if (accessory) {
-      var name = accessory.context.name;
-      this.log.info(name + " is removed from HomeBridge.");
-      this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
-      delete this.accessories[name];
-    }
-  }
+  // removeAccessory(accessory: PlatformAccessory) {
+  //   if (accessory) {
+  //     this.log.info(name + " is removed from HomeBridge.");
+  //     this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
+  //     delete this.accessories[name];
+  //   }
+  // }
 
   // getInitState(accessory: PlatformAccessory) {
   //   var manufacturer = accessory.context.manufacturer || "Default-Manufacturer";
