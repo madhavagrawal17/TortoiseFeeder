@@ -47,7 +47,7 @@ export class ServoStatelessProgrammableSwitchAccessory {
    * Handle requests to get the current value of the "Programmable Switch Output State" characteristic
    */
   handleProgrammableSwitchOutputStateGet(callback) {
-    this.log.debug('Triggered GET ProgrammableSwitchOutputState');
+    this.log.debug('Triggered GET ProgrammableSwitchOutputState value:', this.outputState);
 
     // set this to a valid value for ProgrammableSwitchOutputState
     var error = null;
@@ -86,10 +86,10 @@ export class ServoStatelessProgrammableSwitchAccessory {
     }
 
     if (success) {
-      callback(null);
+      callback(null,this.outputState);
     }
     else {
-      callback(scriptError);
+      callback(scriptError, this.outputState);
     }
   }
 
