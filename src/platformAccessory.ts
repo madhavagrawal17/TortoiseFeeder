@@ -62,9 +62,9 @@ export class ServoStatelessProgrammableSwitchAccessory {
     var success = false;
     var scriptError = null;
     var logger = this.log;
+    this.outputState = value;
     if(value == true)
     {
-      this.outputState = value;
       this.log.debug('Value :', value);
       
       executePython(this.pythonScriptCmd, function (error, stdout, stderr) {
