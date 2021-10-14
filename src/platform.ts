@@ -23,14 +23,14 @@ export class RaspberryPiHomebridgePlatform implements DynamicPlatformPlugin {
   ) {
 
     this.config = config;
-    this.log.debug('Finished initializing platform:', this.config.name);
+    this.log.debug('Finished initializing platform');
 
     // When this event is fired it means Homebridge has restored all cached accessories from disk.
     // Dynamic Platform plugins should only register new accessories after this event was fired,
     // in order to ensure they weren't added to homebridge already. This event can also be used
     // to start discovery of new accessories.
     this.api.on('didFinishLaunching', () => {
-      // log.debug('Executed didFinishLaunching callback');
+      log.debug('Executed didFinishLaunching callback');
       // // run the method to discover / register your devices as accessories
       // this.discoverDevices();
 
@@ -65,6 +65,28 @@ export class RaspberryPiHomebridgePlatform implements DynamicPlatformPlugin {
     }
   }
 
+  // getInitState(accessory: PlatformAccessory) {
+  //   var manufacturer = accessory.context.manufacturer || "Default-Manufacturer";
+  //   var model = accessory.context.model || "Default-Model";
+  //   var serial = accessory.context.serial || "Default-SerialNumber";
+  
+  //   // Update HomeKit accessory information
+  //   accessory.getService(Service.AccessoryInformation)
+  //     .setCharacteristic(Characteristic.Manufacturer, manufacturer)
+  //     .setCharacteristic(Characteristic.Model, model)
+  //     .setCharacteristic(Characteristic.SerialNumber, serial);
+  
+  //   // Retrieve initial state if polling is disabled
+  //   if (!accessory.context.polling) {
+  //     accessory.getService(Service.Switch)
+  //       .getCharacteristic(Characteristic.On)
+  //       .getValue();
+  //   }
+  
+  //   // Configured accessory is reachable
+  //   accessory.updateReachability(true);
+  // }
+
   /**
    * This is an example method showing how to register discovered accessories.
    * Accessories must only be registered once, previously created accessories
@@ -84,7 +106,7 @@ export class RaspberryPiHomebridgePlatform implements DynamicPlatformPlugin {
 
     // loop over the discovered devices and register each one if it has not already been registered
     for (const device of Devices) {
-
+      this.log.info('Device:', device.UniqueId);
       // generate a unique id for the accessory this should be generated from
       // something globally unique, but constant, for example, the device serial
       // number or MAC address
